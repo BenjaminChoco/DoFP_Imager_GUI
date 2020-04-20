@@ -1,6 +1,10 @@
 function Wt_sparse = Create_SparseMat()
-
-
+% Function that creates the sparse matrix Wt_sparse. This matrix enable a
+% simple calculation off the stokes vector for each pixels of the
+% polarimetric image.
+%
+% OUTPUT :
+% Wt_sparse : 3760128x5013504 sparse double matrix
 
 v = @(q, phi) 0.5*[1 ,  q.*cos(2*phi), q*sin(2*phi)];
 phi = [pi/2, pi/4, 3*pi/4, 0]'; % Angles de micropolariseurs (attention à l'ordre !)
