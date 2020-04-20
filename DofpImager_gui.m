@@ -9,19 +9,16 @@ DarkForeground = [0.8, 0.8, 0.8];
 
 %% Oppening the image and its parameters :
 
-% Path to the image and load of Iraw:
-root_dir = "C:\Users\Benjamin\Desktop\CamData\Tests\Lampe_Iraw_1";
-Iraw = load(root_dir);
-Iraw = Iraw.Iraw;
-
 % Initial correction of the DSNU
 Ioffset = load('DSNU_20ms_ND.mat');
 Ioffset = Ioffset.Ioffset;
-I = double(Iraw) - Ioffset;
+% I = double(Iraw) - Ioffset;
 
 % Size of the images
 Dx = 2448;
 Dy = 2048;
+
+Iraw = NaN(Dx,Dy);
 
 %% Creation of the window
 
@@ -60,7 +57,7 @@ hload    = uicontrol('Parent', vbox1,'Style','pushbutton',...
 axIm = axes('Parent', uicontainer('Parent', hbox1,'BackgroundColor', DarkWindow), 'Units', 'normalized');
 
 
-h = imagesc(I, 'Parent', axIm);
+h = imagesc(Iraw, 'Parent', axIm);
 colormap gray
 axis equal
 colorbar(axIm, 'Color', DarkForeground)
@@ -80,6 +77,9 @@ Wt_sparse = Wt_sparse.Wt_sparse ./g;
 
 
 function popup_menu_Callback(source,eventdata) 
+    % Function that drives the popup menu for the selection of the display.
+    % 
+    
     % Determine the selected data set.
     str = get(source, 'String');
     val = get(source,'Value');
@@ -126,10 +126,12 @@ end
 
 
 function loadbutton_Callback(source,eventdata)
-    % Path to the image and load of Iraw:
+    % Function that drive the text entry for the path of Iraw.
+    % It loads the image Iraw from the given path.
     root_dir = hpath.String;
     Iraw = load(root_dir);
     Iraw = Iraw.Iraw;
+    
 end
 
 
