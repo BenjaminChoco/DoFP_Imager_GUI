@@ -17,7 +17,7 @@ Dx = 2448;
 Dy = 2048;
 
 [I0, I45, I90, I135] = SeparPolar(double(Iraw));
-Isparse = reshape(cat(3,I90,I45, I135, I0),[Dx*Dy/4,4]);
+Isparse = reshape(cat(3, I90, I45, I135, I0),[Dx*Dy/4,4]);
 I_sparse = Isparse';
 S_sparse = Wt_sparse*I_sparse(:);
 S = permute(reshape(S_sparse,[3,Dy/2,Dx/2]),[2,3,1]);
