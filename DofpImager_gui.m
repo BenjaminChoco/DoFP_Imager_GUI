@@ -191,7 +191,7 @@ function refresh_display(Iraw, display_type, method, Wt_sparse)
         
         Hue = AoP/max(max(AoP));
         Sat = DoLP;
-        Val = max(DoLP, S(:,:,1)./max(max(S(:,:,1))));
+        Val = max(cat(3, DoLP, S(:,:,1)./max(max(S(:,:,1)))),[],3);
 
         HSV = cat(3,Hue,Sat,Val);
         I = hsv2rgb(HSV);
