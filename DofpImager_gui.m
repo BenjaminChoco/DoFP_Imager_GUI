@@ -10,20 +10,22 @@ DarkForeground = [0.8, 0.8, 0.8];
 %% Oppening the image and its parameters :
 
 % Initial correction of the DSNU
-Ioffset = load('DSNU_20ms_ND.mat');
-Ioffset = double(Ioffset.Ioffset);
+% Ioffset = load('DSNU_20ms_ND.mat');
+% Ioffset = double(Ioffset.Ioffset);
 % I = double(Iraw) - Ioffset;
 
 % Size of the images
 Dx = 2448;
 Dy = 2048;
 
-Iraw = NaN(Dx,Dy);
+Iraw = NaN(Dy,Dx);
 
 %% Loading the polarimétric calibration matrix : Wt_sparse (pseudo inverse
 % of W)
 g = 0.37; % gain of the caméra (en ADU/e-)
+
 Wt_sparse = load('Wt_sparse');
+% Wt_sparse = Create_SparseMat(Dy, Dx);
 Wt_sparse = Wt_sparse.Wt_sparse ./g;
 
 %% Creation of the window
@@ -149,7 +151,11 @@ function loadbutton_Callback(source,eventdata)
     % It loads the image Iraw from the given path.
     root_dir = hpath.String;
     Iraw = load(root_dir);
-    Iraw = double(Iraw.Iraw) - Ioffset;
+    Iraw = double(Iraw.Iraw);% - Ioffset;
+    [nl, nc] = size(Iraw);
+    if (nl ~= Dx)||(nc ~= Dy)
+        Wt_sparse = Create_SparseMat(nc/2, nl/2);
+    end
     refresh_display(Iraw, Display_type, method, Wt_sparse)
 end
 
@@ -187,7 +193,7 @@ function refresh_display(Iraw, display_type, method, Wt_sparse)
         DoLP(DoLP>1) = 1;
         DoLP(DoLP<0) = 0;
         
-        AoP = Stokes2AoP(S(:,:,2),S(:,:,3));
+        AoP = pi + Stokes2AoP(S(:,:,2),S(:,:,3));
         
         Hue = AoP/max(max(AoP));
         Sat = DoLP;
