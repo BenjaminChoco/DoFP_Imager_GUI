@@ -1,4 +1,4 @@
-function Wt_sparse = Create_SparseMat()
+function Wt_sparse = Create_SparseMat(nl, nc)
 % Function that creates the sparse matrix Wt_sparse. This matrix enable a
 % simple calculation off the stokes vector for each pixels of the
 % polarimetric image.
@@ -14,14 +14,14 @@ for i = 1:4
     Li = v(1,phi(i)); % On considère des pixels idéaux
     W(i,:) = Li(1:3);
 end
-W
-Wt = pinv(W)
+% W
+% Wt = pinv(W)
 
-nl = 1024;
-nc = 1224;
+% nl = 1024;
+% nc = 1224;
 Ns = nl*nc;
 
-tic
+% tic
 idx_i = NaN(1,nl*nc*3*4);
 idx_j = NaN(1,nl*nc*3*4);
 val_ij = NaN(1,nl*nc*3*4);
@@ -34,7 +34,7 @@ for i = 1:Ns
     val_ij(((i-1)*12+1):i*12) = Wt_ij(:);
 end
 Wt_sparse = sparse(idx_j,idx_i,val_ij);
-toc
+% toc
 
 
 end
