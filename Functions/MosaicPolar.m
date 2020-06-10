@@ -9,7 +9,15 @@ function [Imos] = MosaicPolar(Iraw)
 % Imos : image séparée en 4 parties. Les polarisation sont regroupées
 % ensembles dans un même coin de l'image.
 
-% end
-[I0, I45, I90, I135] = SeparPolar(Iraw);
+[nl, nc, c] = size(Iraw);
+
+if c == 4
+    I0 = double(Iraw(:,:,1));
+    I45 = double(Iraw(:,:,2));
+    I90 = double(Iraw(:,:,3));
+    I135 = double(Iraw(:,:,4));
+else
+    [I0, I45, I90, I135] = SeparPolar(Iraw);
+end
 Imos = cat(1,cat(2, I90, I45),cat(2, I135, I0)); % Les polar sont regroupées chacunes dans leur coin.
 end

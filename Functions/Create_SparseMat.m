@@ -15,7 +15,7 @@ for i = 1:4
     W(i,:) = Li(1:3);
 end
 % W
-% Wt = pinv(W)
+Wt = pinv(W);
 
 % nl = 1024;
 % nc = 1224;

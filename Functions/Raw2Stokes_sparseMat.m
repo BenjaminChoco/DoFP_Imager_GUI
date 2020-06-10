@@ -13,8 +13,7 @@ function S = Raw2Stokes_sparseMat(Iraw, Wt_sparse)
 
 
 % Size of the images
-Dx = 2448;
-Dy = 2048;
+[Dy, Dx] = size(Iraw);
 
 [I0, I45, I90, I135] = SeparPolar(double(Iraw));
 Isparse = reshape(cat(3, I90, I45, I135, I0),[Dx*Dy/4,4]);
