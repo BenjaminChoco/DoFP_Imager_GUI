@@ -1,5 +1,4 @@
 %% GUI for the display of DoFP polarimétric images 
-
 function DofpImager_gui
 
 %% Paramèters of the interface color
@@ -19,14 +18,15 @@ Dx = 2448;
 Dy = 2048;
 
 Iraw = NaN(Dy,Dx);
+I = NaN(Dy,Dx);
 DoT = false;
 %% Loading the polarimétric calibration matrix : Wt_sparse (pseudo inverse
 % of W)
-g = 0.37; % gain of the caméra (en ADU/e-)
+%g = 0.37; % gain of the caméra (en ADU/e-)  !!!!!!!! 0.61 ADU/e- pour la caméra Stingray !!!!!!!!!!!!!
 
 Wt_sparse = load('Wt_sparse');
 % Wt_sparse = Create_SparseMat(Dy, Dx);
-Wt_sparse = Wt_sparse.Wt_sparse ./g;
+Wt_sparse = Wt_sparse.Wt_sparse;
 
 %% Creation of the window
 
@@ -54,10 +54,22 @@ hpopup_method = uicontrol('Parent', vbox1,'Style','popupmenu',...
              'BackgroundColor', DarkBackground,...
              'ForegroundColor', DarkForeground);         
 
+% Creation of a popup menu to choose the method of inverting
+hbutton_hist = uicontrol('Parent', vbox1,'Style','pushbutton',...
+           'String',{'Plot Histogram'},...
+           'Callback', {@button_hist_Callback},... %, Iraw, Wt_sparse
+             'BackgroundColor', DarkBackground,...
+             'ForegroundColor', DarkForeground); 
+         
 % Creation of the text box requesting te link to the polarimetric
 % image
-hpath  = uicontrol('Parent', vbox1,'Style','Edit',...
-    'String','C:\Users\Benjamin\Desktop\CamData\Tests\Lampe_Iraw_1',...
+hpath_folder  = uicontrol('Parent', vbox1,'Style','Edit',...
+    'String','C:\Users\Benjamin\Desktop\CamData\Tests',...
+             'BackgroundColor', DarkBackground,...
+             'ForegroundColor', DarkForeground);
+
+hpath_name  = uicontrol('Parent', vbox1,'Style','Edit',...
+    'String','Lampe_Iraw_1',...
              'BackgroundColor', DarkBackground,...
              'ForegroundColor', DarkForeground);
          
@@ -143,15 +155,22 @@ function popup_method_Callback(source,eventdata)
     refresh_display(Iraw, Display_type, method, Wt_sparse)
     
 end
-    
+
+
+function button_hist_Callback(source,eventdata)
+    figure()
+    histogram(I,'DisplayStyle','stairs')
+    title(Display_type)
+end
 
 
 function loadbutton_Callback(source,eventdata)
     % Function that drive the text entry for the path of Iraw.
     % It loads the image Iraw from the given path.
-    root_dir = hpath.String;
+    root_dir = strcat(hpath_folder.String, '\', hpath_name.String);
     Iraw = load(root_dir);
-    Iraw = double(Iraw.Iraw);% - Ioffset;
+    Iraw = double(getfield(Iraw, cell2mat(fieldnames(Iraw))));
+    I = Iraw;
     [nl, nc, c] = size(Iraw);
     if c == 1
         if (nl ~= Dx)||(nc ~= Dy)||DoT
