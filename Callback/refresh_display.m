@@ -1,4 +1,4 @@
-function I = refresh_display(Iraw, display_type, method, Wt_sparse, DoT, h)
+function I = refresh_display(Iraw, display_type, method, Wt_sparse, Wt, DoT, h)
     % Function to refresh the display of the image.
     if DoT
         if strcmp(display_type,'mos') % Choice of a 4D mosaic display
@@ -47,14 +47,15 @@ function I = refresh_display(Iraw, display_type, method, Wt_sparse, DoT, h)
             colormap gray
 
         elseif strcmp(display_type,'dolp') % Choice of DoLP display
-            S = Raw2Stokes(Iraw, method, Wt_sparse);
+            S = Raw2Stokes(Iraw, method, Wt_sparse, Wt);
             I = Stokes2DoLP(S(:,:,1),S(:,:,2),S(:,:,3));
             I(I>1) = 1;
             I(I<0) = 0;
+            
             colormap parula
 
         elseif strcmp(display_type,'aop') % Choice of AoP display
-            S = Raw2Stokes(Iraw, method, Wt_sparse);
+            S = Raw2Stokes(Iraw, method, Wt_sparse, Wt);
             I = (180/pi)*Stokes2AoP(S(:,:,2),S(:,:,3));
             colormap hsv
 
@@ -63,7 +64,7 @@ function I = refresh_display(Iraw, display_type, method, Wt_sparse, DoT, h)
             colormap gray
 
         elseif strcmp(display_type,'S0') % Choice of RAW display
-            S = Raw2Stokes(Iraw, method, Wt_sparse);
+            S = Raw2Stokes(Iraw, method, Wt_sparse, Wt);
             I = S(:,:,1);
             colormap parula
             
@@ -73,7 +74,7 @@ function I = refresh_display(Iraw, display_type, method, Wt_sparse, DoT, h)
             colormap jet
             
         elseif strcmp(display_type,'hsv')
-            S = Raw2Stokes(Iraw, method, Wt_sparse);
+            S = Raw2Stokes(Iraw, method, Wt_sparse, Wt);
             DoLP = Stokes2DoLP(S(:,:,1),S(:,:,2),S(:,:,3));
             DoLP(DoLP>1) = 1;
             DoLP(DoLP<0) = 0;

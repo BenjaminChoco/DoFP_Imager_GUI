@@ -12,6 +12,7 @@ function loadbutton_Callback(source,eventdata)
     Display_type = getappdata(handles.hFigure,'Display_type') ;
     method = getappdata(handles.hFigure,'method') ;
     Wt_sparse = getappdata(handles.hFigure,'Wt_sparse') ;
+    Wt = getappdata(handles.hFigure,'Wt') ;
     DoT = getappdata(handles.hFigure,'DoT') ;
     h = getappdata(handles.hFigure,'h') ;
     hpopup_method = getappdata(handles.hFigure,'hpopup_method') ;
@@ -30,14 +31,14 @@ function loadbutton_Callback(source,eventdata)
 %         end
         DoT = false;
         hpopup_method.Enable = 'On';
-        I = refresh_display(Iraw, Display_type, method, Wt_sparse, DoT, h);
+        I = refresh_display(Iraw, Display_type, method, Wt_sparse, Wt, DoT, h);
     elseif c == 4
 %         if (nl ~= Dx)||(nc ~= Dy)||(~DoT)
 %             Wt_sparse = Create_SparseMat(nc, nl);
 %         end
         DoT = true;
         hpopup_method.Enable = 'Off';
-        I = refresh_display(Iraw, Display_type, method, Wt_sparse, DoT, h);
+        I = refresh_display(Iraw, Display_type, method, Wt_sparse, Wt, DoT, h);
     end
     Dx = nl;
     Dy = nc;

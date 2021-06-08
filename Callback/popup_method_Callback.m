@@ -10,6 +10,7 @@ function popup_method_Callback(source,eventdata)
     Display_type = getappdata(handles.hFigure,'Display_type') ;
     method = getappdata(handles.hFigure,'method') ;
     Wt_sparse = getappdata(handles.hFigure,'Wt_sparse') ;
+    Wt = getappdata(handles.hFigure,'Wt') ;
     DoT = getappdata(handles.hFigure,'DoT') ;
     h = getappdata(handles.hFigure,'h') ;
     
@@ -23,8 +24,10 @@ function popup_method_Callback(source,eventdata)
             method = str{val};
         case 'Fourier'
             method = str{val};
+        case 'LocalSP'
+            method = str{val};
     end
-    I = refresh_display(Iraw, Display_type, method, Wt_sparse, DoT, h);
+    I = refresh_display(Iraw, Display_type, method, Wt_sparse, Wt, DoT, h);
     
     setappdata(handles.hFigure, 'method', method);
     setappdata(handles.hFigure, 'I', I);
