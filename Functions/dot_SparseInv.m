@@ -20,7 +20,7 @@ I90 = double(Idot(:,:,3));
 I135 = double(Idot(:,:,4));
 Isparse = reshape(cat(3, I90, I45, I135, I0),[Dx*Dy,4]);
 I_sparse = Isparse';
-S_sparse = Wt_sparse*I_sparse(:);
+S_sparse = Wt_sparse(1:Dx*Dy*3/4,1:Dx*Dy)*I_sparse(:);
 S = permute(reshape(S_sparse,[3,Dy,Dx]),[2,3,1]);
 
 

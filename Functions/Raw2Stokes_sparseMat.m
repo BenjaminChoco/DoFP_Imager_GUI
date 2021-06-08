@@ -18,7 +18,7 @@ function S = Raw2Stokes_sparseMat(Iraw, Wt_sparse)
 [I0, I45, I90, I135] = SeparPolar(double(Iraw));
 Isparse = reshape(cat(3, I90, I45, I135, I0),[Dx*Dy/4,4]);
 I_sparse = Isparse';
-S_sparse = Wt_sparse*I_sparse(:);
+S_sparse = Wt_sparse(1:Dx*Dy*3/4,1:Dx*Dy)*I_sparse(:);
 S = permute(reshape(S_sparse,[3,Dy/2,Dx/2]),[2,3,1]);
 
 

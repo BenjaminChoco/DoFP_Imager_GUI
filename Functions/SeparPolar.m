@@ -2,7 +2,7 @@ function [I0, I45, I90, I135] = SeparPolar(Iraw)
 % Cette fonction permet de séparer les polarisation issues des microgrilles
 % de la caméra polarimétrique pour les regrouper ensembles chacune de leur
 % coté.
-% Imos = SeparPolar(Iraw)
+% [I0, I45, I90, I135] = SeparPolar(Iraw)
 % INPUT :
 % Iraw : image RAW issue de la caméra polarimétrique
 % OUTPUT :

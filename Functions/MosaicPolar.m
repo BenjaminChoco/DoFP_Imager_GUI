@@ -19,5 +19,6 @@ if c == 4
 else
     [I0, I45, I90, I135] = SeparPolar(Iraw);
 end
-Imos = cat(1,cat(2, I90, I45),cat(2, I135, I0)); % Les polar sont regroupées chacunes dans leur coin.
+
+Imos = cat(1,cat(2, I90, I45),cat(2, I135, I0));
 end

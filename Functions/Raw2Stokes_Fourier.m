@@ -10,7 +10,24 @@ function S = Raw2Stokes_Fourier(Iraw, appod, padding)
 % S : Image du vecteur de Stokes dans la scène. (3 canaux)
 
 [nl,nc] = size(Iraw);
-Iraw = double(Iraw); 
+Iraw = double(Iraw);
+
+if not(floor(nl/4) == nl/4)
+    Iraw = Iraw(1:end-2,:);
+end
+if not(floor(nc/4) == nc/4)
+    Iraw = Iraw(:,1:end-2);
+end
+
+% Photometric calibration
+t = [1.034, 1.014, 0.938, 1.014]; % relative transmission of the micro-polarizers. ( for the orientation [0, 45, 90, 135]°] )
+
+[nl,nc] = size(Iraw);
+Iraw(1:2:nl,1:2:nc) = Iraw(1:2:nl,1:2:nc)/t(3); % pixels haut-gauche, 90°
+Iraw(1:2:nl,2:2:nc) = Iraw(1:2:nl,2:2:nc)/t(2); % pixels haut-droite, 45°
+Iraw(2:2:nl,1:2:nc) = Iraw(2:2:nl,1:2:nc)/t(4); % pixels bas-gauche, 135°
+Iraw(2:2:nl,2:2:nc) = Iraw(2:2:nl,2:2:nc)/t(1); % pixels bas-droite, 0°
+
 % Passage dans l'espace de Fourier discret :
 If = fftshift(fft2(double(Iraw)));
 
@@ -39,7 +56,6 @@ else
     S0f = zeros(size(Iraw));
     S1pS2f = zeros(size(Iraw));
     S1mS2f = zeros(size(Iraw));
-    
     S0f(0.25*nl+1:0.75*nl,0.25*nc+1:0.75*nc) = If(0.25*nl+1:0.75*nl,0.25*nc+1:0.75*nc).*G; % Terme contenant l'information sur S0
     S1pS2f(0.25*nl+1:0.75*nl,0.25*nc+1:0.75*nc) = -4*cat(2,If(0.25*nl+1:0.75*nl,0.75*nc+1:nc),If(0.25*nl+1:0.75*nl,1:0.25*nc)).*G; % Terme contenant l'information sur S1+S2
     S1mS2f(0.25*nl+1:0.75*nl,0.25*nc+1:0.75*nc) = -4*cat(1,If(0.75*nl+1:nl,0.25*nc+1:0.75*nc),If(1:0.25*nl,0.25*nc+1:0.75*nc)).*G; % Terme contenant l'information sur S1-S2
