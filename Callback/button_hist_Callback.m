@@ -14,5 +14,4 @@ function button_hist_Callback(source,eventdata)
     figure()
     histogram(I, 'DisplayStyle', 'stairs')
     title(strcat(Display_type, '  <', method, '>'))
-
 end
